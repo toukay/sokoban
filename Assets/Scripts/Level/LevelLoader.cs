@@ -22,6 +22,7 @@ namespace Level
         private Dictionary<char, GameObject> _tileMap;
         private Dictionary<char, GameObject> _objectMap;
         private int _currentLevelIndex = -1;
+        private Camera _camera;
 
         private void Start()
         {
@@ -31,10 +32,12 @@ namespace Level
                 return;
             }
 
+            _camera = Camera.main;
+
             _tileMap = new Dictionary<char, GameObject>
             {
                 { levelKeys.WallKey, wallPrefab },
-                { levelKeys.EmptySpaceKey, emptySpacePrefab }
+                { levelKeys.EmptySpaceKey, emptySpacePrefab },
             };
 
             _objectMap = new Dictionary<char, GameObject>
@@ -58,6 +61,8 @@ namespace Level
             _currentLevelIndex++;
 
             string[] levelLines = levels[_currentLevelIndex].text.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
+            Bounds levelBounds = new Bounds();
+
             for (int y = 0; y < levelLines.Length; y++)
             {
                 for (int x = 0; x < levelLines[y].Length; x++)
@@ -69,19 +74,40 @@ namespace Level
                     if (_tileMap.TryGetValue(key, out GameObject tilePrefab))
                     {
                         if (tilePrefab != null)
+                        {
                             Instantiate(tilePrefab, worldPosition, Quaternion.identity);
+                        }
                     }
 
                     if (_objectMap.TryGetValue(key, out GameObject objectPrefab))
                     {
                         if (emptySpacePrefab != null)
+                        {
                             Instantiate(emptySpacePrefab, worldPosition, Quaternion.identity);
-                        
-                        if (objectPrefab != null) 
+                        }
+
+                        if (objectPrefab != null)
+                        {
                             Instantiate(objectPrefab, worldPosition, Quaternion.identity);
+                        }
                     }
+
+                    levelBounds.Encapsulate(worldPosition);
                 }
             }
+
+            SetCamera(levelBounds);
+        }
+
+        private void SetCamera(Bounds bounds)
+        {
+            bounds.Expand(1);
+
+            float verticalSize = bounds.size.y / 2f;
+            float horizontalSize = bounds.size.x * _camera.pixelHeight / _camera.pixelWidth / 2f;
+
+            _camera.transform.position = new Vector3(bounds.center.x, bounds.center.y, -10f);
+            _camera.orthographicSize = Mathf.Max(verticalSize, horizontalSize);
         }
     }
 }
