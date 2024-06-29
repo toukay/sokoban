@@ -75,7 +75,7 @@ namespace Level
                     {
                         if (tilePrefab != null)
                         {
-                            Instantiate(tilePrefab, worldPosition, Quaternion.identity);
+                            Instantiate(tilePrefab, worldPosition, Quaternion.identity, transform);
                         }
                     }
 
@@ -83,7 +83,7 @@ namespace Level
                     {
                         if (emptySpacePrefab != null)
                         {
-                            Instantiate(emptySpacePrefab, worldPosition, Quaternion.identity);
+                            Instantiate(emptySpacePrefab, worldPosition, Quaternion.identity, transform);
                         }
 
                         if (objectPrefab != null)
