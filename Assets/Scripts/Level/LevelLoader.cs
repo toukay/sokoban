@@ -18,6 +18,9 @@ namespace Level
 
         [Header("Grid Settings")]
         [SerializeField] private Grid grid;
+        
+        [Header("Layers")]
+        [SerializeField] private LayerMask obstacleLayer;
 
         private Dictionary<char, GameObject> _tileMap;
         private Dictionary<char, GameObject> _objectMap;
@@ -75,7 +78,12 @@ namespace Level
                     {
                         if (tilePrefab != null)
                         {
-                            Instantiate(tilePrefab, worldPosition, Quaternion.identity);
+                            GameObject instance = Instantiate(tilePrefab, worldPosition, Quaternion.identity, transform);
+                            
+                            if (tilePrefab == wallPrefab)
+                            {
+                                instance.layer = LayerMask.NameToLayer("Obstacle");
+                            }
                         }
                     }
 
@@ -83,7 +91,7 @@ namespace Level
                     {
                         if (emptySpacePrefab != null)
                         {
-                            Instantiate(emptySpacePrefab, worldPosition, Quaternion.identity);
+                            Instantiate(emptySpacePrefab, worldPosition, Quaternion.identity, transform);
                         }
 
                         if (objectPrefab != null)
