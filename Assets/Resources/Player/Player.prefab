@@ -102,6 +102,9 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 256
+  wallTag: Wall
+  crateTag: Crate
+  targetTag: Target
 --- !u!114 &1131240475800873759
 MonoBehaviour:
   m_ObjectHideFlags: 0
