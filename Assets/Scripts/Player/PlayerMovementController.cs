@@ -28,11 +28,34 @@ namespace Player
             _moveRightCommand = new MoveCommand(this, Direction.Right, DefaultDistance);
         }
         
-        public void Move(Vector3 displacement)
+        public void Move(Vector3 direction, float distance)
         {
-            if (!IsValidMove(displacement)) return;
+            direction.Normalize();
             
-            transform.position += displacement;
+            GameObject obstacle = GetObstacle(transform, direction, distance);
+            
+            if (obstacle != null)
+            {
+                if (obstacle.CompareTag(crateTag) && CanPushCrate(obstacle, direction, distance))
+                {
+                    PushCrate(obstacle, direction, distance);
+                }
+                else
+                {
+                    return;
+                }
+            }
+            
+            transform.position += direction * distance;
+        }
+        
+        private void PushCrate(GameObject crate, Vector3 direction, float distance)
+        {
+            direction.Normalize();
+            
+            if (IsBlockedByObstacle(crate.transform, direction, distance)) return;
+                
+            crate.transform.position += direction * distance;
         }
 
         public void OnInputMoveUp(InputAction.CallbackContext context)
@@ -63,33 +86,46 @@ namespace Player
             _moveRightCommand.Execute();
         }
 
-        private bool IsValidMove(Vector3 displacement)
+        private bool IsValidMove(Vector3 direction, float distance)
         {
-            Vector3 direction = displacement.normalized;
-            float distance = displacement.magnitude;
+            direction.Normalize();
             
             return !IsBlockedByObstacle(transform, direction, distance);
         }
         
         private bool CanPushCrate(GameObject crate, Vector3 direction, float distance)
-        {
-           return !IsBlockedByObstacle(crate.transform, direction, distance);
+        { 
+            direction.Normalize();
+
+            if (IsBlockedByObstacle(crate.transform, direction, distance))
+                return false;
+            
+            return true;
         }
         
         private bool IsBlockedByObstacle(Transform originTransform, Vector3 direction, float distance)
         {
+            GameObject obstacle = GetObstacle(originTransform, direction, distance);
+
+            if (obstacle == null) return false;
+
+            if (obstacle.CompareTag(crateTag))
+                return !CanPushCrate(obstacle, direction, distance);
+
+            return true;
+        }
+        
+        private GameObject GetObstacle(Transform originTransform, Vector3 direction, float distance)
+        {
+            direction.Normalize();
+            
             Vector3 origin = originTransform.position + direction.normalized * RayCastOffset;
 
             RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance * RayCastDistanceMultiplier, obstacleLayer);
 
-            if (hit.collider == null) return false;
+            if (hit.collider == null) return null;
             
-            GameObject hitObject = hit.collider.gameObject;
-
-            if (hitObject.CompareTag(crateTag))
-                return !CanPushCrate(hitObject, direction, distance);
-
-            return true;
+            return hit.collider.gameObject;
         }
 
 
@@ -108,7 +144,9 @@ namespace Player
 
         private void DrawRay(Vector3 origin, Vector3 direction, float distance)
         {
-            bool isValid = IsValidMove(direction * distance);
+            direction.Normalize();
+            
+            bool isValid = IsValidMove(direction, distance);
             Gizmos.color = isValid ? Color.green : Color.red;
             Gizmos.DrawRay(origin, direction * distance);
         }

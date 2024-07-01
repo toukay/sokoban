@@ -5,32 +5,29 @@ namespace Player.Commands
     public class MoveCommand: IPlayerCommand
     {
         private PlayerMovementController _playerMovementController;
-        private Vector3 _displacement;
+        private Vector3 _direction;
+        private float _distance;
         
         public MoveCommand(PlayerMovementController playerMovementController, Direction direction, float distance)
         {
             _playerMovementController = playerMovementController;
-            _displacement = ComputeDisplacement(direction, distance);
+            _direction = DirectionToVector(direction);
+            _distance = distance;
         }
         
         public void Execute()
         {
-            _playerMovementController.Move(_displacement);
+            _playerMovementController.Move(_direction, _distance);
         }
         
         public void Undo()
         {
-            _playerMovementController.Move(-_displacement);
+            _playerMovementController.Move(-_direction, _distance);
         }
         
         public void Redo()
         {
             Execute();
-        }
-        
-        private static Vector3 ComputeDisplacement(Direction direction, float distance)
-        {
-            return DirectionToVector(direction) * distance;
         }
         
         private static Vector3 DirectionToVector(Direction direction)
