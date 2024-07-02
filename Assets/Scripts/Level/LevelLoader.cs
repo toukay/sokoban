@@ -27,6 +27,7 @@ namespace Level
         private Dictionary<char, GameObject> _objectMap;
         private int _currentLevelIndex = -1;
         private Camera _camera;
+        private List<GameObject> _currentLevelObjects;
 
         private void Start()
         {
@@ -51,6 +52,7 @@ namespace Level
                 { levelKeys.TargetKey, targetPrefab }
             };
 
+            _currentLevelObjects = new List<GameObject>();
             LoadNextLevel();
         }
 
@@ -60,11 +62,24 @@ namespace Level
                 return;
 
             if (_currentLevelIndex + 1 >= levels.Length || levels[_currentLevelIndex + 1] == null)
+            {
+                # if UNITY_EDITOR
+                Debug.Log("No more levels to load.");
+                # endif
                 return;
-
+            }
+            
             _currentLevelIndex++;
 
-            string[] levelLines = levels[_currentLevelIndex].text.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
+            ClearCurrentLevelObjects();
+            LoadLevel(levels[_currentLevelIndex].text);
+
+            OnLevelLoaded?.Invoke();
+        }
+
+        private void LoadLevel(string levelText)
+        {
+            string[] levelLines = levelText.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
             Bounds levelBounds = new Bounds();
 
             for (int y = 0; y < levelLines.Length; y++)
@@ -80,7 +95,8 @@ namespace Level
                         if (tilePrefab != null)
                         {
                             GameObject instance = Instantiate(tilePrefab, worldPosition, Quaternion.identity, transform);
-                            
+                            _currentLevelObjects.Add(instance);
+
                             if (tilePrefab == wallPrefab)
                             {
                                 instance.layer = LayerMask.NameToLayer("Obstacle");
@@ -92,12 +108,14 @@ namespace Level
                     {
                         if (emptySpacePrefab != null)
                         {
-                            Instantiate(emptySpacePrefab, worldPosition, Quaternion.identity, transform);
+                            GameObject emptySpaceInstance = Instantiate(emptySpacePrefab, worldPosition, Quaternion.identity, transform);
+                            _currentLevelObjects.Add(emptySpaceInstance);
                         }
 
                         if (objectPrefab != null)
                         {
-                            Instantiate(objectPrefab, worldPosition, Quaternion.identity);
+                            GameObject objectInstance = Instantiate(objectPrefab, worldPosition, Quaternion.identity);
+                            _currentLevelObjects.Add(objectInstance);
                         }
                     }
 
@@ -106,8 +124,17 @@ namespace Level
             }
 
             SetCamera(levelBounds);
-            
-            OnLevelLoaded?.Invoke();
+        }
+
+        private void ClearCurrentLevelObjects()
+        {
+            Debug.Log("Clearing current level objects");
+            foreach (GameObject obj in _currentLevelObjects)
+            {
+                Destroy(obj);
+            }
+            Debug.Log("Cleared current level objects");
+            _currentLevelObjects.Clear();
         }
 
         private void SetCamera(Bounds bounds)
@@ -119,6 +146,14 @@ namespace Level
 
             _camera.transform.position = new Vector3(bounds.center.x, bounds.center.y, -10f);
             _camera.orthographicSize = Mathf.Max(verticalSize, horizontalSize);
+        }
+        
+        public T[] GetObjectsOfType<T>() where T : MonoBehaviour
+        {
+            return _currentLevelObjects
+                .Select(obj => obj.GetComponent<T>())
+                .Where(component => component != null)
+                .ToArray();
         }
     }
 }

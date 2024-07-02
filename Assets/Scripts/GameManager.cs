@@ -48,7 +48,7 @@ public class GameManager: MonoBehaviour
     
     private void OnLevelLoaded()
     {
-        _targets = FindObjectsOfType<Target>();
+        _targets = levelLoader.GetObjectsOfType<Target>();
         foreach (var target in _targets)
         {
             target.OnOccupied += OnTargetOccupied;
