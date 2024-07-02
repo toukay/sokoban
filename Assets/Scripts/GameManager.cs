@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Commands;
 using Level;
 using Player;
 using UnityEngine;
@@ -44,6 +45,7 @@ public class GameManager: MonoBehaviour
     {
         if (AreAllTargetsOccupied())
         {
+            CommandHistoryHandler.Instance.Clear();
             levelLoader.LoadNextLevel();
         }
     }

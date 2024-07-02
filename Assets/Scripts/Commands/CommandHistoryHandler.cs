@@ -36,5 +36,11 @@ namespace Commands
             _currentCommandIndex++;
             _commands[_currentCommandIndex].Redo();
         }
+        
+        public void Clear()
+        {
+            _commands.Clear();
+            _currentCommandIndex = -1;
+        }
     }
 }
