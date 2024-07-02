@@ -33,7 +33,9 @@ namespace Level
         {
             if (grid == null)
             {
+                # if UNITY_EDITOR
                 Debug.LogError("Grid is not assigned.");
+                # endif
                 return;
             }
 
@@ -128,12 +130,9 @@ namespace Level
 
         private void ClearCurrentLevelObjects()
         {
-            Debug.Log("Clearing current level objects");
-            foreach (GameObject obj in _currentLevelObjects)
-            {
+            foreach (GameObject obj in _currentLevelObjects) 
                 Destroy(obj);
-            }
-            Debug.Log("Cleared current level objects");
+            
             _currentLevelObjects.Clear();
         }
 
