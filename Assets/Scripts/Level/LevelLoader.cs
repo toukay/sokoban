@@ -154,5 +154,18 @@ namespace Level
                 .Where(component => component != null)
                 .ToArray();
         }
+        
+        public GameObject GetObjectOfTag(string goTag)
+        {
+            return _currentLevelObjects
+                .FirstOrDefault(obj => obj.CompareTag(goTag));
+        }
+        
+        public T GetObjectOfTypeWithTag<T>(string goTag) where T : MonoBehaviour
+        {
+            return _currentLevelObjects
+                .Select(obj => obj.GetComponent<T>())
+                .FirstOrDefault(component => component != null && component.CompareTag(goTag));
+        }
     }
 }

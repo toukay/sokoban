@@ -6,7 +6,7 @@ public class Movable : MonoBehaviour, IMovable
 {
     [SerializeField] private LayerMask obstacleLayer;
     
-    protected const float DefaultDistance = 1f;
+    public const float DefaultDistance = 1f;
     private const float RayCastOffset = DefaultDistance * 0.6f;
     private const float RayCastDistanceMultiplier = 0.8f;
     

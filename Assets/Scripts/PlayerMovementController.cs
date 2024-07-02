@@ -1,22 +1,25 @@
-using System;
-using Player.Commands;
+using Commands;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Player
 {
-    public class PlayerMovementController : Movable
+    public class PlayerMovementController : MonoBehaviour
     {
+        private Movable _player;
+        
         private MoveCommand _moveUpCommand;
         private MoveCommand _moveDownCommand;
         private MoveCommand _moveLeftCommand;
         private MoveCommand _moveRightCommand;
         
-        private void Start()    
+        public void SetPlayer(Movable player)
         {
-            _moveUpCommand = new MoveCommand(this, Direction.Up, DefaultDistance);
-            _moveDownCommand = new MoveCommand(this, Direction.Down, DefaultDistance);
-            _moveLeftCommand = new MoveCommand(this, Direction.Left, DefaultDistance);
-            _moveRightCommand = new MoveCommand(this, Direction.Right, DefaultDistance);
+            _player = player;
+            _moveUpCommand = new MoveCommand(_player, Direction.Up, Movable.DefaultDistance);
+            _moveDownCommand = new MoveCommand(_player, Direction.Down, Movable.DefaultDistance);
+            _moveLeftCommand = new MoveCommand(_player, Direction.Left, Movable.DefaultDistance);
+            _moveRightCommand = new MoveCommand(_player, Direction.Right, Movable.DefaultDistance);
         }
 
         public void OnInputMoveUp(InputAction.CallbackContext context)
