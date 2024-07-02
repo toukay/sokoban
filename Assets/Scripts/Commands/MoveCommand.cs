@@ -19,7 +19,20 @@ namespace Commands
         
         protected override void ExecuteCommand()
         {
-            _movable.Move(_directionVector, _distance);
+            if (_movable.CanMove(_directionVector, _distance))
+                _movable.Move(_directionVector, _distance);
+            else
+            {
+                GameObject obstacle = _movable.GetObstacle(_directionVector, _distance);
+                if (obstacle != null
+                    && obstacle.TryGetComponent(out Movable movableObstacle)
+                    && !ReferenceEquals(_movable, movableObstacle)
+                    && movableObstacle.CanMove(_directionVector, _distance))
+                {
+                    new MoveCommand(movableObstacle, _direction, _distance).Execute();
+                    _movable.Move(_directionVector, _distance, force:true);
+                }
+            }
         }
         
         public override void Undo()
