@@ -1,3 +1,4 @@
+using System;
 using Player.Commands;
 using UnityEngine.InputSystem;
 
@@ -10,7 +11,7 @@ namespace Player
         private MoveCommand _moveLeftCommand;
         private MoveCommand _moveRightCommand;
         
-        private void Start()
+        private void Start()    
         {
             _moveUpCommand = new MoveCommand(this, Direction.Up, DefaultDistance);
             _moveDownCommand = new MoveCommand(this, Direction.Down, DefaultDistance);

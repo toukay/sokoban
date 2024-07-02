@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Level
@@ -19,8 +21,7 @@ namespace Level
         [Header("Grid Settings")]
         [SerializeField] private Grid grid;
         
-        [Header("Layers")]
-        [SerializeField] private LayerMask obstacleLayer;
+        public event Action OnLevelLoaded;
 
         private Dictionary<char, GameObject> _tileMap;
         private Dictionary<char, GameObject> _objectMap;
@@ -53,7 +54,7 @@ namespace Level
             LoadNextLevel();
         }
 
-        private void LoadNextLevel()
+        public void LoadNextLevel()
         {
             if (_tileMap == null || levels == null)
                 return;
@@ -105,6 +106,8 @@ namespace Level
             }
 
             SetCamera(levelBounds);
+            
+            OnLevelLoaded?.Invoke();
         }
 
         private void SetCamera(Bounds bounds)
