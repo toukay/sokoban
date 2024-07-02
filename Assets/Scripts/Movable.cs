@@ -2,55 +2,41 @@
 using UnityEngine;
 
 [Serializable]
-public class Movable : MonoBehaviour, IMovable
+public class Movable : MonoBehaviour
 {
     [SerializeField] private LayerMask obstacleLayer;
     
-    protected const float DefaultDistance = 1f;
+    public const float DefaultDistance = 1f;
     private const float RayCastOffset = DefaultDistance * 0.6f;
     private const float RayCastDistanceMultiplier = 0.8f;
     
-    public void Move(Vector3 direction, float distance)
+    public void Move(Vector3 direction, float distance, bool force = false)
     {
-        GameObject obstacle = GetObstacle(transform, direction, distance);
-        
-        if (obstacle != null)
-        {
-            if (obstacle.TryGetComponent(out IMovable movable) && !ReferenceEquals(this, movable) && movable.CanMove(direction, distance))
-            {
-                movable.Move(direction, distance);
-            }
-            else
-            {
-                return;
-            }
-        }
+        if (!force && !CanMove(direction, distance)) return;
         
         transform.position += direction * distance;
     }
 
-    public bool CanMove(Vector3 direction, float distance)
+    public bool CanMove(Vector3 direction, float distance, bool withMovable = false)
     {
-        GameObject obstacle = GetObstacle(transform, direction, distance);
+        GameObject obstacle = GetObstacle(direction, distance);
 
-        return obstacle == null || (
-            obstacle.TryGetComponent(out IMovable movable) 
-            && !ReferenceEquals(this, movable) 
-            && movable.CanMove(direction, distance)
-        );
+        return obstacle == null 
+               || (withMovable && obstacle.TryGetComponent(out Movable movable)
+                   && !ReferenceEquals(this, movable)
+                   && movable.CanMove(direction, distance));
     }
         
-    private GameObject GetObstacle(Transform originTransform, Vector3 direction, float distance)
+    public GameObject GetObstacle(Vector3 direction, float distance)
     {
         direction.Normalize();
             
-        Vector3 origin = originTransform.position + direction.normalized * RayCastOffset;
+        Vector3 origin = transform.position + direction.normalized * RayCastOffset;
 
         RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance * RayCastDistanceMultiplier, obstacleLayer);
 
         return hit.collider != null ? hit.collider.gameObject : null;
     }
-
 
     #region Editor Debugging
     #if UNITY_EDITOR
@@ -69,7 +55,7 @@ public class Movable : MonoBehaviour, IMovable
     {
         direction.Normalize();
             
-        bool canMove = CanMove(direction, distance);
+        bool canMove = CanMove(direction, distance, withMovable:true);
         Gizmos.color = canMove ? Color.green : Color.red;
         Gizmos.DrawRay(origin, direction * distance);
     }

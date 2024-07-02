@@ -58,6 +58,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Undo",
+                    "type": "Button",
+                    "id": "0caf421a-d5d6-4e72-a1bd-7b430efdefcb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Redo",
+                    "type": "Button",
+                    "id": "a7ecfb58-60ad-4634-b1aa-fd9c0830b7e0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -234,6 +252,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "MoveLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3d4f084c-658e-4fd4-b17c-246f34ee375f",
+                    "path": "<Keyboard>/u",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Undo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "90d6f6c3-f3c8-4746-93ef-895b503aaf7a",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Redo",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

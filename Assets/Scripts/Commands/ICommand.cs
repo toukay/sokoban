@@ -1,6 +1,6 @@
-﻿namespace Player.Commands
+﻿namespace Commands
 {
-    public interface IPlayerCommand
+    public interface ICommand
     {
         void Execute();
         void Undo();
