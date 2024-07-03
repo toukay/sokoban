@@ -17,6 +17,8 @@ namespace Audio
         public AudioClip level1Music;
         public AudioClip level2Music;
         public AudioClip level3Music;
+        public AudioClip level4Music;
+        public AudioClip level5Music;
         public AudioClip buttonClickSfx;
         public AudioClip toggleSfx;
         public AudioClip tapSfx;
@@ -120,6 +122,8 @@ namespace Audio
                 1 => level1Music,
                 2 => level2Music,
                 3 => level3Music,
+                4 => level4Music,
+                5 => level5Music,
                 _ => defaultBackgroundMusic,
             };
             PlayMusic(clip);

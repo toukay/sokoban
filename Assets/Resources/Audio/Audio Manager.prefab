@@ -53,6 +53,8 @@ MonoBehaviour:
   level1Music: {fileID: 8300000, guid: 0ad591428b0c18c4da51fe3bf98dbc63, type: 3}
   level2Music: {fileID: 8300000, guid: 51a4f1157b7ff1449b5e5cf064d584c7, type: 3}
   level3Music: {fileID: 8300000, guid: 35967e8a4dfb1664e9b066939272c0a4, type: 3}
+  level4Music: {fileID: 8300000, guid: bef0cef2ded0f0645ad90c6e5bdd4965, type: 3}
+  level5Music: {fileID: 8300000, guid: 1f2ad53bacc245642854dbdc8ea71a9b, type: 3}
   buttonClickSfx: {fileID: 8300000, guid: 2bd1cdaff75ac194cbfe5a182dcf0fae, type: 3}
   toggleSfx: {fileID: 8300000, guid: 22be567fa2251ff4984be152363f070f, type: 3}
   tapSfx: {fileID: 8300000, guid: dcc3fed3446793d4f93f97373aeef784, type: 3}
