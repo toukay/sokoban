@@ -11,14 +11,14 @@ public class Movable : MonoBehaviour
     private const float RayCastOffset = DefaultDistance * 0.6f;
     private const float RayCastDistanceMultiplier = 0.8f;
     
-    public void Move(Vector3 direction, float distance, bool force = false)
+    public virtual void Move(Vector3 direction, float distance, bool force = false)
     {
         if (!force && !CanMove(direction, distance)) return;
         
         transform.position += direction * distance;
     }
 
-    public bool CanMove(Vector3 direction, float distance, bool withMovable = false)
+    public virtual bool CanMove(Vector3 direction, float distance, bool withMovable = false)
     {
         GameObject obstacle = GetObstacle(direction, distance);
 
@@ -28,7 +28,7 @@ public class Movable : MonoBehaviour
                    && movable.CanMove(direction, distance));
     }
         
-    public GameObject GetObstacle(Vector3 direction, float distance)
+    public virtual GameObject GetObstacle(Vector3 direction, float distance)
     {
         direction.Normalize();
             

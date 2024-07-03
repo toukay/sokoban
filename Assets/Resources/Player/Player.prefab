@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 3174492939896585999}
   - component: {fileID: 6711694634920723775}
   - component: {fileID: -2460440712809536992}
-  - component: {fileID: 152040195845212379}
+  - component: {fileID: -7619957109422879601}
+  - component: {fileID: 219920408732461922}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -76,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 9dec0af4394ad3b43bce71dcbb59bc42, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4c99bca3a79ee0e4bbec15d50cdc8e09, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -159,7 +160,28 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &152040195845212379
+--- !u!95 &-7619957109422879601
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3783684054439853497}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b97707fff92b17448840d8257796ae94, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &219920408732461922
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,9 +190,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3783684054439853497}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9098d1bc56642fba25ca24293d586ec, type: 3}
+  m_Script: {fileID: 11500000, guid: 41d334fa2fe54152a827604cf9fc1412, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 256
+  animator: {fileID: -7619957109422879601}
+  moveXParameter: MoveX
+  moveYParameter: MoveY
+  isMovingParameter: IsMoving
