@@ -23,17 +23,17 @@ namespace UI
             IsPaused = false;
         }
 
-        private void Pause()
+        public void Pause(bool menu = true)
         {
             pauseScreen.SetActive(true);
-            pauseMenuWindow.SetActive(true);
+            pauseMenuWindow.SetActive(menu);
             optionsMenuWindow.SetActive(false);
             Time.timeScale = 0f;
             IsPaused = true;
             OnPause?.Invoke(IsPaused);
         }
 
-        private void Resume()
+        public void Resume()
         {
             pauseScreen.SetActive(false);
             pauseMenuWindow.SetActive(true);
@@ -60,7 +60,11 @@ namespace UI
         
         public void OnButtonRestart()
         {
-            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+            pauseScreen.SetActive(false);
+            pauseMenuWindow.SetActive(true);
+            optionsMenuWindow.SetActive(false);
+            GameManager.Instance.RestartLevel();
+            Resume();
         }
         
         public void OnButtonMainMenu()

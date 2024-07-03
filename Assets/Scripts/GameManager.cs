@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Commands;
 using Level;
 using UI;
@@ -8,11 +9,13 @@ public class GameManager: MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     
-    public bool IsGamePaused { get; private set; }
+    public bool IsGamePaused => PauseMenuController.IsPaused;
+    public bool HasNextLevel => levelLoader.HasNextLevel;
     
     [SerializeField] private LevelLoader levelLoader;
     [SerializeField] private PlayerMovementController playerMovementController;
     [SerializeField] private string playerTag = "Player";
+    [SerializeField] private EndMenuController endMenuController;
     
     private Target[] _targets;
     
@@ -27,10 +30,6 @@ public class GameManager: MonoBehaviour
     {
         levelLoader.OnLevelLoaded += OnLevelLoaded;
         _pauseMenuController = FindObjectOfType<PauseMenuController>();
-        if (_pauseMenuController != null)
-        {
-            _pauseMenuController.OnPause += SetPause;
-        }
     }
     
     private void OnDisable()
@@ -43,12 +42,13 @@ public class GameManager: MonoBehaviour
                 target.OnOccupied -= OnTargetOccupied;
             }
         }
-        if (_pauseMenuController != null)
-        {
-            _pauseMenuController.OnPause -= SetPause;
-        }
     }
-    
+
+    private void Start()
+    {
+        _pauseMenuController = FindObjectOfType<PauseMenuController>();
+    }
+
     private bool AreAllTargetsOccupied()
     {
         return _targets.Length == 0 || _targets.All(target => target.IsOccupied);
@@ -58,8 +58,12 @@ public class GameManager: MonoBehaviour
     {
         if (AreAllTargetsOccupied())
         {
-            CommandHistoryHandler.Instance.Clear();
-            levelLoader.LoadNextLevel();
+            if (endMenuController != null && _pauseMenuController)
+            {
+                _pauseMenuController.Pause(false);
+                endMenuController.DisplayEndMenu();
+            }
+            else LoadNextLevel();
         }
     }
     
@@ -84,8 +88,29 @@ public class GameManager: MonoBehaviour
         else Destroy(gameObject);
     }
     
-    public void SetPause(bool isPaused)
+    public void RestartLevel()
     {
-        IsGamePaused = isPaused;
+        CommandHistoryHandler.Instance.Clear();
+        levelLoader.RestartLevel();
+    }
+    
+    public void LoadNextLevel()
+    {
+        CommandHistoryHandler.Instance.Clear();
+        levelLoader.LoadNextLevel();
+    }
+
+    public void PauseGame()
+    {
+        if (_pauseMenuController == null || IsGamePaused) return;
+        
+        _pauseMenuController.Pause(false);
+    }
+    
+    public void ResumeGame()
+    {
+        if (_pauseMenuController == null || !IsGamePaused) return;
+        
+        _pauseMenuController.Resume();
     }
 }

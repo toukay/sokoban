@@ -22,6 +22,7 @@ namespace Level
         [SerializeField] private Grid grid;
         
         public event Action OnLevelLoaded;
+        public bool HasNextLevel => _currentLevelIndex + 1 < levels.Length;
 
         private Dictionary<char, GameObject> _tileMap;
         private Dictionary<char, GameObject> _objectMap;
@@ -126,6 +127,14 @@ namespace Level
             }
 
             SetCamera(levelBounds);
+        }
+
+        public void RestartLevel()
+        {
+            ClearCurrentLevelObjects();
+            LoadLevel(levels[_currentLevelIndex].text);
+            
+            OnLevelLoaded?.Invoke();
         }
 
         private void ClearCurrentLevelObjects()
