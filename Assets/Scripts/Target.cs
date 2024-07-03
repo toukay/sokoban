@@ -1,4 +1,5 @@
 ﻿using System;
+using Audio;
 using UnityEngine;
 
 public class Target: MonoBehaviour
@@ -16,6 +17,9 @@ public class Target: MonoBehaviour
         {
             _isOccupied = true;
             OnOccupied?.Invoke();
+
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySfx(AudioManager.Instance.crateTargetInSfx);
         }
     }
     
@@ -24,6 +28,9 @@ public class Target: MonoBehaviour
         if (other.CompareTag(crateTag))
         {
             _isOccupied = false;
+            
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySfx(AudioManager.Instance.crateTargetOutSfx);
         }
     }
 }

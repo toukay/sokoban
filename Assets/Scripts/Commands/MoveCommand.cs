@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Audio;
+using UnityEngine;
 
 namespace Commands
 {
@@ -20,7 +21,11 @@ namespace Commands
         protected override void ExecuteCommand()
         {
             if (_movable.CanMove(_directionVector, _distance))
+            {
                 _movable.Move(_directionVector, _distance);
+                if (AudioManager.Instance != null)
+                    AudioManager.Instance.PlayPlayerMoveSfx();
+            }
             else
             {
                 GameObject obstacle = _movable.GetObstacle(_directionVector, _distance);
@@ -31,6 +36,8 @@ namespace Commands
                 {
                     new MoveCommand(movableObstacle, _direction, _distance).Execute();
                     _movable.Move(_directionVector, _distance, force:true);
+                    if (AudioManager.Instance != null)
+                        AudioManager.Instance.PlayCrateMoveSfx();
                 }
             }
         }
