@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using UnityEngine;
 
 namespace Level
@@ -127,6 +128,9 @@ namespace Level
             }
 
             SetCamera(levelBounds);
+
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlayLevelMusic(_currentLevelIndex+1);
         }
 
         public void RestartLevel()

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using Audio;
 using Commands;
 using Level;
 using UI;
@@ -9,13 +9,13 @@ public class GameManager: MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     
-    public bool IsGamePaused => PauseMenuController.IsPaused;
-    public bool HasNextLevel => levelLoader.HasNextLevel;
-    
     [SerializeField] private LevelLoader levelLoader;
     [SerializeField] private PlayerMovementController playerMovementController;
     [SerializeField] private string playerTag = "Player";
     [SerializeField] private EndMenuController endMenuController;
+    
+    public bool IsGamePaused => PauseMenuController.IsPaused;
+    public bool HasNextLevel => levelLoader.HasNextLevel;
     
     private Target[] _targets;
     
@@ -62,6 +62,8 @@ public class GameManager: MonoBehaviour
             {
                 _pauseMenuController.Pause(false);
                 endMenuController.DisplayEndMenu();
+                if (AudioManager.Instance != null)
+                    AudioManager.Instance.PlaySfx(AudioManager.Instance.levelCompleteSfx, force:true);
             }
             else LoadNextLevel();
         }

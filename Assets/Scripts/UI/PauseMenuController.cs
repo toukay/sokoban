@@ -1,4 +1,5 @@
 ﻿using System;
+using Audio;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -31,6 +32,9 @@ namespace UI
             Time.timeScale = 0f;
             IsPaused = true;
             OnPause?.Invoke(IsPaused);
+
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PauseMusic();
         }
 
         public void Resume()
@@ -41,6 +45,9 @@ namespace UI
             Time.timeScale = 1f;
             IsPaused = false;
             OnPause?.Invoke(IsPaused);
+
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.ResumeMusic();
         }
 
         public void OnInputPause(InputAction.CallbackContext context)

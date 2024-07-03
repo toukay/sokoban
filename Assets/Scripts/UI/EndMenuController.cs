@@ -15,7 +15,6 @@ namespace UI
         
         public void DisplayEndMenu()
         {
-            GameManager.Instance.PauseGame();
             endMenuWindow.SetActive(true);
         }
 
