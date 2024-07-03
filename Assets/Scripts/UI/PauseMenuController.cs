@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,8 @@ namespace UI
         [SerializeField] private int mainMenuSceneIndex = 0;
 
         public static bool IsPaused = false;
+        
+        public event Action<bool> OnPause;
         
         private void Start()
         {
@@ -27,6 +30,7 @@ namespace UI
             optionsMenuWindow.SetActive(false);
             Time.timeScale = 0f;
             IsPaused = true;
+            OnPause?.Invoke(IsPaused);
         }
 
         private void Resume()
@@ -36,6 +40,7 @@ namespace UI
             optionsMenuWindow.SetActive(false);
             Time.timeScale = 1f;
             IsPaused = false;
+            OnPause?.Invoke(IsPaused);
         }
 
         public void OnInputPause(InputAction.CallbackContext context)

@@ -1,18 +1,22 @@
 ﻿using System.Linq;
 using Commands;
 using Level;
-using Player;
+using UI;
 using UnityEngine;
 
 public class GameManager: MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     
+    public bool IsGamePaused { get; private set; }
+    
     [SerializeField] private LevelLoader levelLoader;
     [SerializeField] private PlayerMovementController playerMovementController;
     [SerializeField] private string playerTag = "Player";
     
     private Target[] _targets;
+    
+    private PauseMenuController _pauseMenuController;
     
     private void Awake()
     {
@@ -22,6 +26,11 @@ public class GameManager: MonoBehaviour
     private void OnEnable()
     {
         levelLoader.OnLevelLoaded += OnLevelLoaded;
+        _pauseMenuController = FindObjectOfType<PauseMenuController>();
+        if (_pauseMenuController != null)
+        {
+            _pauseMenuController.OnPause += SetPause;
+        }
     }
     
     private void OnDisable()
@@ -33,6 +42,10 @@ public class GameManager: MonoBehaviour
             {
                 target.OnOccupied -= OnTargetOccupied;
             }
+        }
+        if (_pauseMenuController != null)
+        {
+            _pauseMenuController.OnPause -= SetPause;
         }
     }
     
@@ -69,5 +82,10 @@ public class GameManager: MonoBehaviour
             if(!destroyOnLoad) DontDestroyOnLoad(gameObject);
         } 
         else Destroy(gameObject);
+    }
+    
+    public void SetPause(bool isPaused)
+    {
+        IsGamePaused = isPaused;
     }
 }
