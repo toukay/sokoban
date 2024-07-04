@@ -36,6 +36,7 @@ namespace Audio
         public AudioClip crateMove5Sfx;
         public AudioClip crateTargetInSfx;
         public AudioClip crateTargetOutSfx;
+        public AudioClip undoSfx;
         public AudioClip levelCompleteSfx;
         public AudioClip newLevelSfx;
         

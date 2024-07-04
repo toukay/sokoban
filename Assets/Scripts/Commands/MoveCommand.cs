@@ -45,6 +45,9 @@ namespace Commands
         public override void Undo()
         {
             _movable.Move(-_directionVector, _distance);
+            
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySfx(AudioManager.Instance.undoSfx);
         }
         
         public override void Redo()
