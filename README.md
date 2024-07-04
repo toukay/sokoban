@@ -16,9 +16,8 @@ This project is a classic Sokoban puzzle game where the player pushes boxes to d
 - 5 challenging levels.
 - Pause, Resume, and Restart level functionality.
 - Resolution, Quality, and Audio settings.
-- Good looking cute art style.
-- Interactive and fun sound effects and music.
-- Intuitive user interface.
+- Interactive sound effects and music.
+- UI menues.
 
 ## Attribution
 
