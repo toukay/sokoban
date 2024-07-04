@@ -63,7 +63,7 @@ public class GameManager: MonoBehaviour
                 _pauseMenuController.Pause(false);
                 endMenuController.DisplayEndMenu();
                 if (AudioManager.Instance != null)
-                    AudioManager.Instance.PlaySfx(AudioManager.Instance.levelCompleteSfx, force:true);
+                    AudioManager.Instance.PlaySfx(AudioManager.Instance.levelCompleteSfx);
             }
             else LoadNextLevel();
         }

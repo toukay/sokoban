@@ -29,7 +29,7 @@ public class Target: MonoBehaviour
         {
             _isOccupied = false;
             
-            if (AudioManager.Instance != null)
+            if (AudioManager.Instance != null && GameManager.Instance != null && !GameManager.Instance.IsGamePaused)
                 AudioManager.Instance.PlaySfx(AudioManager.Instance.crateTargetOutSfx);
         }
     }

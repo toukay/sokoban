@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1784040953872445093}
-  SFxSource: {fileID: 41217448223106561}
+  sfxSource: {fileID: 41217448223106561}
   defaultBackgroundMusic: {fileID: 8300000, guid: ac0804bdeed376e43a5531f2d9171d33, type: 3}
   mainMenuMusic: {fileID: 8300000, guid: ac0804bdeed376e43a5531f2d9171d33, type: 3}
   level1Music: {fileID: 8300000, guid: 0ad591428b0c18c4da51fe3bf98dbc63, type: 3}

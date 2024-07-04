@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Audio
 {
@@ -9,7 +11,7 @@ namespace Audio
         
         [Header("Audio Sources")]
         [SerializeField] AudioSource musicSource;
-        [SerializeField] AudioSource SFxSource;
+        [SerializeField] AudioSource sfxSource;
         
         [Header("Audio Clips")]
         public AudioClip defaultBackgroundMusic;
@@ -38,10 +40,20 @@ namespace Audio
         public AudioClip newLevelSfx;
         
         private AudioClip _forcedSfx;
+        
+        private bool _canPlaySfx = false;
+        private const float SfxDelay = 0.1f;
 
         private void Awake()
         {
             EnsureSingleton();
+            StartCoroutine(WaitInitialSfxDelay());
+        }
+        
+        private IEnumerator WaitInitialSfxDelay()
+        {
+            yield return new WaitForSeconds(SfxDelay);
+            _canPlaySfx = true;
         }
 
         public void PlayMusic(AudioClip clip = null)
@@ -63,21 +75,11 @@ namespace Audio
             musicSource.Play();
         }
 
-        public void PlaySfx(AudioClip clip, bool force = false)
+        public void PlaySfx(AudioClip clip)
         {
-            if (force)
-            {
-                SFxSource.clip = clip;
-                SFxSource.Play();
-                _forcedSfx = clip;
-            }
-            else if (_forcedSfx == null || !SFxSource.isPlaying)
-            {
-                _forcedSfx = null;
-                SFxSource.clip = clip;
-                SFxSource.Play();
-            }
+            if (!_canPlaySfx) return;
             
+            sfxSource.PlayOneShot(clip);
         }
         
         public void PlayPlayerMoveSfx()
