@@ -29,7 +29,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (_currentCommand == null || !IsExecutionAllowed()) return;
         
-        _currentCommand.Execute();
+        _currentCommand.Clone().Execute();
     }
 
     public void OnInputMoveUp(InputAction.CallbackContext context)
@@ -40,7 +40,7 @@ public class PlayerMovementController : MonoBehaviour
         
         if (!IsExecutionAllowed(context)) return;
             
-        command.Execute();
+        command.Clone().Execute();
     }
         
     public void OnInputMoveDown(InputAction.CallbackContext context)
@@ -51,7 +51,7 @@ public class PlayerMovementController : MonoBehaviour
         
         if (!IsExecutionAllowed(context)) return;
             
-        command.Execute();
+        command.Clone().Execute();
     }
         
     public void OnInputMoveLeft(InputAction.CallbackContext context)
@@ -62,7 +62,7 @@ public class PlayerMovementController : MonoBehaviour
         
         if (!IsExecutionAllowed(context)) return;
             
-        command.Execute();
+        command.Clone().Execute();
     }
         
     public void OnInputMoveRight(InputAction.CallbackContext context)
@@ -73,7 +73,7 @@ public class PlayerMovementController : MonoBehaviour
         
         if (!IsExecutionAllowed(context)) return;
             
-        command.Execute();
+        command.Clone().Execute();
     }
 
     private bool IsExecutionAllowed(InputAction.CallbackContext context)

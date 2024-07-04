@@ -44,7 +44,9 @@ namespace Commands
         
         public override void Undo()
         {
-            _movable.Move(-_directionVector, _distance);
+            Direction oppositeDirection = GetOppositeDirection(_direction);
+            Vector3 oppositeDirectionVector = DirectionToVector(oppositeDirection);
+            _movable.Move(oppositeDirectionVector, _distance);
             
             if (AudioManager.Instance != null)
                 AudioManager.Instance.PlaySfx(AudioManager.Instance.undoSfx);
@@ -60,6 +62,17 @@ namespace Commands
             return new MoveCommand(_movable, _direction, _distance);
         }
         
+        private Direction GetOppositeDirection(Direction direction)
+        {
+            return direction switch {
+                Direction.Up => Direction.Down,
+                Direction.Down => Direction.Up,
+                Direction.Left => Direction.Right,
+                Direction.Right => Direction.Left,
+                _ => Direction.None
+            };
+        }
+        
         private static Vector3 DirectionToVector(Direction direction)
         {
             return direction switch {
@@ -72,5 +85,5 @@ namespace Commands
         }
     }
     
-    public enum Direction { Up, Down, Left, Right }
+    public enum Direction { Up, Down, Left, Right, None }
 }
