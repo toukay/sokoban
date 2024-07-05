@@ -4,7 +4,7 @@
 
 A simple 2D Sokoban game created in Unity.
 
-You can download or play the WebGL build directly in the browser [here](https://toukay.itch.io/sokoban).
+You can download the windows build, or you can play the WebGL build directly in a browser [here](https://toukay.itch.io/sokoban).
 
 ## Overview
 
